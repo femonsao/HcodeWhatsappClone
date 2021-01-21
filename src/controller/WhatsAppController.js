@@ -187,19 +187,50 @@ class WhatsAppController {
       this.closeRecordMIcrophone();
       console.log("audio sending!");
     });
+
+    this.el.inputText.on("keypress", (e) => {
+      if (e.key === "Enter" && !e.ctrlKey) {
+        e.preventDefault();
+
+        this.el.btnSend.click();
+      }
+    });
+    this.el.inputText.on("keyup", (e) => {
+      if (this.el.inputText.innerHTML.length) {
+        this.el.inputPlaceholder.hide();
+        this.el.btnSendMicrophone.hide();
+        this.el.btnSend.show();
+      } else {
+        this.el.inputPlaceholder.show();
+        this.el.btnSendMicrophone.show();
+        this.el.btnSend.hide();
+      }
+    });
+    this.el.btnSend.on("click", (e) => {
+      let userText = this.el.inputText.innerHTML;
+
+      console.log(userText);
+    });
+
+    this.el.btnEmojis.on("click", (e) => {
+      this.el.panelEmojis.toggleClass("open");
+    });
+    this.el.panelEmojis.querySelectorAll(".emojik").forEach((emoji) => {
+      emoji.on("click", (e) => {
+        console.log(emoji);
+      });
+    });
   }
   startRecordMicrophoneTime() {
     let startHour = Date.now();
 
-   this._recordMicrophoneInterval = setInterval(() => {
-    let what =this.el.recordMicrophoneTimer.innerHTML = Format.toTime(Date.now() - startHour);
-    console.log(what)
+    this._recordMicrophoneInterval = setInterval(() => {
+      let what = (this.el.recordMicrophoneTimer.innerHTML = Format.toTime(
+        Date.now() - startHour
+      ));
+      console.log(what);
     }, 100);
-
-
   }
-
-  
 
   closeRecordMIcrophone() {
     this.el.recordMicrophone.hide();
