@@ -174,11 +174,37 @@ class WhatsAppController {
       this.closeAllMainPanel();
       this.el.panelMessagesContainer.show();
     });
-    this.el.btnSendMicrophone.on('click', e=>{
+    this.el.btnSendMicrophone.on("click", (e) => {
+      this.el.recordMicrophone.show();
+      this.el.btnSendMicrophone.hide();
+      this.startRecordMicrophoneTime();
+    });
+    this.el.btnCancelMicrophone.on("click", (e) => {
+      this.closeRecordMIcrophone();
+      console.log("audio canceled!");
+    });
+    this.el.btnFinishMicrophone.on("click", (e) => {
+      this.closeRecordMIcrophone();
+      console.log("audio sending!");
+    });
+  }
+  startRecordMicrophoneTime() {
+    let startHour = Date.now();
 
-      console.log('send audio message')
+   this._recordMicrophoneInterval = setInterval(() => {
+    let what =this.el.recordMicrophoneTimer.innerHTML = Format.toTime(Date.now() - startHour);
+    console.log(what)
+    }, 100);
 
-    })
+
+  }
+
+  
+
+  closeRecordMIcrophone() {
+    this.el.recordMicrophone.hide();
+    this.el.btnSendMicrophone.show();
+    clearInterval(this._recordMicrophoneInterval);
   }
 
   closeAllMainPanel() {
