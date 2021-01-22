@@ -217,9 +217,24 @@ class WhatsAppController {
     });
     this.el.panelEmojis.querySelectorAll(".emojik").forEach((emoji) => {
       emoji.on("click", (e) => {
-        console.log(emoji);
+        console.log(emoji.dataset.unicode);
+        // this.el.inputPlaceholder.hide();
+        // this.el.inputText.innerHTML = emoji.dataset.unicode;
+        let imgEmoji = this.el.imgEmojiDefault.cloneNode();
+
+        imgEmoji.style.cssText = emoji.style.cssText;
+        imgEmoji.dataset.unicode = emoji.dataset.unicode;
+        imgEmoji.alt = emoji.dataset.unicode;
+
+        emoji.classList.forEach(name=>{
+          imgEmoji.classList.add(name);
+
+        });
+        this.el.inputText.appendChild(imgEmoji);
+        this.el.inputText.dispatchEvent(new Event("keyup"))
       });
     });
+    
   }
   startRecordMicrophoneTime() {
     let startHour = Date.now();
