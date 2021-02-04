@@ -128,17 +128,97 @@ class WhatsAppController {
     });
 
     this.el.btnAttachPhoto.on("click", (e) => {
-      console.log("photo");
+      this.el.inputPhoto.click();
+    });
+    this.el.inputPhoto.on("change", (e) => {
+      console.log(this.el.inputPhoto.files);
+
+      [...this.el.inputPhoto.files].forEach((file) => {
+        console.log(file);
+      });
     });
     this.el.btnAttachCamera.on("click", (e) => {
-      console.log("camera");
+      this.closeAllMainPanel();
+      this.el.panelCamera.addClass("open");
+      this.el.panelCamera.css({
+        "height": "calc(100% - 120px)",
+      });
+    });
+    this.el.btnClosePanelCamera.on("click", (e) => {
+      this.closeAllMainPanel();
+      this.el.panelMessagesContainer.show();
+    });
+    this.el.btnTakePicture.on("click", (e) => {
+      console.log("Tirando foto!!!");
     });
     this.el.btnAttachDocument.on("click", (e) => {
-      console.log("document");
+      this.closeAllMainPanel();
+      this.el.panelDocumentPreview.addClass("open");
+      this.el.panelDocumentPreview.css({
+        "height": "calc(100% - 120px)",
+      });
+    });
+    this.el.btnSendDocument.on('click', e=>{
+
+      console.log('sending document!!')
+
+    })
+    this.el.btnClosePanelDocumentPreview.on("click", (e) => {
+      this.closeAllMainPanel();
+      this.el.panelMessagesContainer.show();
     });
     this.el.btnAttachContact.on("click", (e) => {
-      console.log("contact");
+      
+
+      this.el.modalContacts.show();
     });
+    this.el.btnCloseModalContacts.on('click', e=>{
+
+      this.el.modalContacts.hide();
+
+    })
+    this.el.btnSendMicrophone.on('click', e=>{
+
+      this.el.btnSendMicrophone.hide();
+      this.el.recordMicrophone.show();
+      this.startRecordMicrophoneTime();
+    
+     
+
+    })
+    this.el.btnCancelMicrophone.on('click', e=>{
+      console.log('audio canceled!');
+      this.closeRecordMicrophone()
+
+    })
+    this.el.btnFinishMicrophone.on('click', e=>{
+      console.log('audio sended!');
+      
+      this.closeRecordMicrophone();
+
+    })
+  }
+  startRecordMicrophoneTime(){
+    let timeStart = Date.now();
+    this._recordMicrophoneInterval = setInterval(()=>{
+      this.el.recordMicrophoneTimer.innerHTML =( Date.now() - timeStart)
+
+    }, 100);
+
+  }
+  closeRecordMicrophone(){
+      
+    this.el.btnSendMicrophone.show();
+    this.el.recordMicrophone.hide();
+    clearInterval( this._recordMicrophoneInterval );
+
+
+
+  }
+  closeAllMainPanel() {
+    this.el.panelDocumentPreview.removeClass("open");
+    this.el.panelCamera.removeClass("open");
+    this.el.panelMessagesContainer.hide();
   }
   closeMenuAttach(e) {
     document.removeEventListener("click", this.closeMenuAttach);
