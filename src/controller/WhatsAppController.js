@@ -230,7 +230,29 @@ class WhatsAppController {
           imgEmoji.classList.add(name);
 
         });
-        this.el.inputText.appendChild(imgEmoji);
+        // this.el.inputText.appendChild(imgEmoji);
+
+        let cursor = window.getSelection();
+        if (!cursor.focusNode | !cursor.focusNode.id == "input-text"){
+          this.el.inputText.focus();
+          cursor = window.getSelection();
+          console.log('foquei')
+        }
+
+        let rangeText = document.createRange();
+
+        rangeText = cursor.getRangeAt(0);
+        rangeText.deleteContents();
+
+        let fragText = document.createDocumentFragment();
+
+        fragText.appendChild(imgEmoji);
+
+        rangeText.insertNode(fragText);
+        rangeText.setStartAfter(imgEmoji);
+
+        
+
         this.el.inputText.dispatchEvent(new Event("keyup"))
       });
     });
